@@ -1,0 +1,41 @@
+syntax = "v1"
+
+info (
+	author: "shyandsy"
+	date:   "2025-05-17"
+	desc:   "test api"
+)
+
+type (
+	Book {
+		Id     []int64 `json:"id"`
+		Name   string  `json:"name"`
+		Author int64   `json:"author"`
+	}
+	BasePageReq {
+		Page    int `form:"page,default=1"`
+		PageSie int `form:"pageSize,default=100"`
+	}
+	BasePageResp {
+		Page  int   `json:"page"`
+		Total int64 `json:"total"`
+	}
+	GetBookReq {
+		BasePageReq
+	}
+	GetBookResp {
+		BasePageResp
+		Items []Book `json:"items"`
+	}
+)
+
+@server (
+	group:  test
+	prefix: /v1
+)
+service test {
+	@doc "get books"
+	@handler getBooks
+	get /book (GetBookReq) returns (GetBookResp)
+}
+

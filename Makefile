@@ -1,3 +1,6 @@
+SHELL := /bin/zsh
+.ONESHELL:
+
 build:
 	go build -ldflags="-s -w" goctl.go
 	$(if $(shell command -v upx || which upx), upx goctl)
@@ -23,3 +26,8 @@ image:
 	docker tag kevinwan/goctl:$(version)-arm64 kevinwan/goctl:latest-arm64
 	docker push kevinwan/goctl:$(version)-arm64
 	docker push kevinwan/goctl:latest-arm64
+
+build-demo:
+	make build
+	./goctl api go -api demo/test.api -dir ./demo/ --style=goZero
+
