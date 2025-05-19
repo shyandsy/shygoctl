@@ -15,6 +15,22 @@ func (t PrimitiveType) Documents() []string {
 	return nil
 }
 
+func (t QualifiedType) Name() string {
+	return t.RawName
+}
+
+func (t QualifiedType) Package() string {
+	return t.PackageName
+}
+
+func (t QualifiedType) Comments() []string {
+	return nil
+}
+
+func (t QualifiedType) Documents() []string {
+	return nil
+}
+
 // Name returns a structure string, such as User
 func (t DefineStruct) Name() string {
 	return t.RawName

@@ -43,16 +43,17 @@ typeBlockStruct: {checkKeyword(p)}structName=ID structToken=ID? lbrace='{'  fiel
 typeBlockAlias: {checkKeyword(p)}alias=ID assign='='? dataType;
 field:          {isNormal(p)}? normalField|anonymousFiled ;
 normalField:    {checkKeyword(p)}fieldName=ID dataType tag=RAW_STRING?;
-anonymousFiled: star='*'? ID;
-dataType:       {isInterface(p)}ID
+anonymousFiled: star='*'? qualifiedType | ID;
+dataType:       qualifiedType //用于支持包类型，包括 time='time.Time'
+                |ID
                 |mapType
                 |arrayType
                 |inter='interface{}'
-                |time='time.Time'
                 |pointerType
                 |typeStruct
                 ;
-pointerType:    star='*' {checkKeyword(p)}ID;
+qualifiedType: pkg=ID dot=DOT name=ID;
+pointerType:    star='*' dataType;
 mapType:        {match(p,"map")}mapToken=ID lbrack='[' {checkKey(p)}key=ID rbrack=']' value=dataType;
 arrayType:      lbrack='[' rbrack=']' dataType;
 
@@ -60,9 +61,11 @@ arrayType:      lbrack='[' rbrack=']' dataType;
 serviceSpec:    atServer? serviceApi;
 atServer:       ATSERVER lp='(' kvLit+ rp=')';
 serviceApi:     {match(p,"service")}serviceToken=ID serviceName lbrace='{' serviceRoute* rbrace='}';
-serviceRoute:   atDoc? (atServer|atHandler) route;
+serviceRoute:   atDoc? atRoles? atFeatures? (atServer|atHandler) route;
 atDoc:          ATDOC lp='('? ((kvLit+)|STRING) rp=')'?;
 atHandler:      ATHANDLER ID;
+atRoles:        ATROLES lp='['? ((kvLit+)|STRING) rp=']'?;
+atFeatures:     ATFEATURES lp='['? ((kvLit+)|STRING) rp=']'?;
 route:          {checkHTTPMethod(p)}httpMethod=ID path request=body? response=replybody?;
 body:           lp='(' (ID)? rp=')';
 replybody:      returnToken='returns' lp='(' dataType? rp=')';

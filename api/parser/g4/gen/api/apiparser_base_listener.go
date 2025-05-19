@@ -152,6 +152,12 @@ func (s *BaseApiParserListener) EnterDataType(ctx *DataTypeContext) {}
 // ExitDataType is called when production dataType is exited.
 func (s *BaseApiParserListener) ExitDataType(ctx *DataTypeContext) {}
 
+// EnterQualifiedType is called when production qualifiedType is entered.
+func (s *BaseApiParserListener) EnterQualifiedType(ctx *QualifiedTypeContext) {}
+
+// ExitQualifiedType is called when production qualifiedType is exited.
+func (s *BaseApiParserListener) ExitQualifiedType(ctx *QualifiedTypeContext) {}
+
 // EnterPointerType is called when production pointerType is entered.
 func (s *BaseApiParserListener) EnterPointerType(ctx *PointerTypeContext) {}
 
@@ -205,6 +211,18 @@ func (s *BaseApiParserListener) EnterAtHandler(ctx *AtHandlerContext) {}
 
 // ExitAtHandler is called when production atHandler is exited.
 func (s *BaseApiParserListener) ExitAtHandler(ctx *AtHandlerContext) {}
+
+// EnterAtRoles is called when production atRoles is entered.
+func (s *BaseApiParserListener) EnterAtRoles(ctx *AtRolesContext) {}
+
+// ExitAtRoles is called when production atRoles is exited.
+func (s *BaseApiParserListener) ExitAtRoles(ctx *AtRolesContext) {}
+
+// EnterAtFeatures is called when production atFeatures is entered.
+func (s *BaseApiParserListener) EnterAtFeatures(ctx *AtFeaturesContext) {}
+
+// ExitAtFeatures is called when production atFeatures is exited.
+func (s *BaseApiParserListener) ExitAtFeatures(ctx *AtFeaturesContext) {}
 
 // EnterRoute is called when production route is entered.
 func (s *BaseApiParserListener) EnterRoute(ctx *RouteContext) {}

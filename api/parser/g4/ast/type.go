@@ -84,8 +84,9 @@ type (
 		Literal   DataType
 	}
 
-	// Time describes the time ast for api syntax
-	Time struct {
+	// Qualified describes the type with referred package, such as time.Time, common.BaseReq
+	Qualified struct {
+		Package Expr
 		Literal Expr
 	}
 
@@ -93,7 +94,7 @@ type (
 	Pointer struct {
 		PointerExpr Expr
 		Star        Expr
-		Name        Expr
+		Name        DataType
 	}
 )
 
@@ -282,15 +283,34 @@ func (v *ApiVisitor) VisitAnonymousFiled(ctx *api.AnonymousFiledContext) any {
 	var field TypeField
 	field.IsAnonymous = true
 	if ctx.GetStar() != nil {
-		nameExpr := v.newExprWithTerminalNode(ctx.ID())
 		field.DataType = &Pointer{
 			PointerExpr: v.newExprWithText(ctx.GetStar().GetText()+ctx.ID().GetText(), start.GetLine(), start.GetColumn(), start.GetStart(), stop.GetStop()),
 			Star:        v.newExprWithToken(ctx.GetStar()),
-			Name:        nameExpr,
+		}
+		if ctx.ID() != nil {
+			field.DataType = &Pointer{
+				Name: ctx.ID().Accept(v).(DataType),
+			}
+		} else if ctx.QualifiedType() != nil {
+			field.DataType = &Pointer{
+				Name: ctx.QualifiedType().Accept(v).(DataType),
+			}
+		} else {
+			panic("both ctx.ID() and ctx.QualifiedType() nil")
 		}
 	} else {
-		nameExpr := v.newExprWithTerminalNode(ctx.ID())
-		field.DataType = &Literal{Literal: nameExpr}
+		if ctx.ID() != nil {
+			nameExpr := v.newExprWithTerminalNode(ctx.ID())
+			field.DataType = &Literal{Literal: nameExpr}
+		} else if ctx.QualifiedType() != nil {
+			t := ctx.QualifiedType()
+			field.DataType = &Qualified{
+				Package: v.newExprWithToken(t.GetPkg()),
+				Literal: v.newExprWithToken(t.GetName()),
+			}
+		} else {
+			panic("both ctx.ID() and ctx.QualifiedType() nil")
+		}
 	}
 	field.DocExpr = v.getDoc(ctx)
 	field.CommentExpr = v.getComment(ctx)
@@ -313,11 +333,14 @@ func (v *ApiVisitor) VisitDataType(ctx *api.DataTypeContext) any {
 	if ctx.GetInter() != nil {
 		return &Interface{Literal: v.newExprWithToken(ctx.GetInter())}
 	}
-	if ctx.GetTime() != nil {
+	if ctx.QualifiedType() != nil {
 		// todo: reopen if it is necessary
-		timeExpr := v.newExprWithToken(ctx.GetTime())
-		v.panic(timeExpr, "unsupported time.Time")
-		return &Time{Literal: timeExpr}
+		//v.panic(qualifiedExpr, "unsupported qualified")
+		t := ctx.QualifiedType()
+		return &Qualified{
+			Package: v.newExprWithToken(t.GetPkg()),
+			Literal: v.newExprWithToken(t.GetName()),
+		}
 	}
 	if ctx.PointerType() != nil {
 		return ctx.PointerType().Accept(v)
@@ -327,11 +350,11 @@ func (v *ApiVisitor) VisitDataType(ctx *api.DataTypeContext) any {
 
 // VisitPointerType implements from api.BaseApiParserVisitor
 func (v *ApiVisitor) VisitPointerType(ctx *api.PointerTypeContext) any {
-	nameExpr := v.newExprWithTerminalNode(ctx.ID())
+	//nameExpr := v.newExprWithTerminalNode(ctx.DataType().ID())
 	return &Pointer{
-		PointerExpr: v.newExprWithText(ctx.GetText(), ctx.GetStar().GetLine(), ctx.GetStar().GetColumn(), ctx.GetStar().GetStart(), ctx.ID().GetSymbol().GetStop()),
+		PointerExpr: v.newExprWithText(ctx.GetText(), ctx.GetStar().GetLine(), ctx.GetStar().GetColumn(), ctx.GetStar().GetStart(), ctx.DataType().GetStop().GetStop()),
 		Star:        v.newExprWithToken(ctx.GetStar()),
-		Name:        nameExpr,
+		Name:        ctx.DataType().Accept(v).(DataType),
 	}
 }
 
@@ -537,23 +560,23 @@ func (a *Array) IsNotNil() bool {
 }
 
 // Expr returns the expression string of Time
-func (t *Time) Expr() Expr {
+func (t *Qualified) Expr() Expr {
 	return t.Literal
 }
 
 // Format provides a formatter for api command, now nothing to do
-func (t *Time) Format() error {
+func (t *Qualified) Format() error {
 	// todo
 	return nil
 }
 
 // Equal compares whether the element literals in two Time are equal
-func (t *Time) Equal(dt DataType) bool {
+func (t *Qualified) Equal(dt DataType) bool {
 	if dt == nil {
 		return false
 	}
 
-	v, ok := dt.(*Time)
+	v, ok := dt.(*Qualified)
 	if !ok {
 		return false
 	}
@@ -562,7 +585,7 @@ func (t *Time) Equal(dt DataType) bool {
 }
 
 // IsNotNil returns whether the instance is nil or not
-func (t *Time) IsNotNil() bool {
+func (t *Qualified) IsNotNil() bool {
 	return t != nil
 }
 

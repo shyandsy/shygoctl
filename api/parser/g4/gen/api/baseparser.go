@@ -11,9 +11,10 @@ import (
 )
 
 const (
-	versionRegex     = `(?m)"v[1-9][0-9]*"`
-	importValueRegex = `(?m)"\/?(?:[^/]+\/)*[^/]+.api"`
-	tagRegex         = `(?m)\x60[a-z]+:".+"\x60`
+	versionRegex       = `(?m)"v[1-9][0-9]*"`
+	ImportValueRegex   = `(?m)"\/?(?:[^/]+\/)*[^/]+.api"`
+	ImportPackageRegex = `(?m)"\/?(?:[^/]+\/)*[^/]+"`
+	tagRegex           = `(?m)\x60[a-z]+:".+"\x60`
 )
 
 var (
@@ -51,14 +52,14 @@ func match(p *ApiParserParser, text string) {
 
 func checkVersion(p *ApiParserParser) {
 	v := getCurrentTokenText(p)
-	if !matchRegex(v, versionRegex) {
+	if !MatchRegex(v, versionRegex) {
 		notifyErrorListeners(p, mismatched("version", v))
 	}
 }
 
 func checkImportValue(p *ApiParserParser) {
 	v := getCurrentTokenText(p)
-	if !matchRegex(v, importValueRegex) {
+	if !MatchRegex(v, ImportValueRegex) && !MatchRegex(v, ImportPackageRegex) {
 		notifyErrorListeners(p, mismatched("import value", v))
 	}
 }
@@ -177,7 +178,7 @@ func isNormal(p *ApiParserParser) bool {
 
 // MatchTag returns a Boolean value, which returns true if it does matched, otherwise returns false
 func MatchTag(v string) bool {
-	return matchRegex(v, tagRegex)
+	return MatchRegex(v, tagRegex)
 }
 
 func isInterface(p *ApiParserParser) {
@@ -209,7 +210,7 @@ func notifyErrorListeners(p *ApiParserParser, msg string) {
 	p.NotifyErrorListeners(msg, nil, nil)
 }
 
-func matchRegex(text, str string) bool {
+func MatchRegex(text, str string) bool {
 	re := regexp.MustCompile(str)
 	v := re.FindString(text)
 	text = strings.TrimFunc(text, func(r rune) bool {

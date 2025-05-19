@@ -1,27 +1,45 @@
 syntax = "v1"
 
-info (
+import (
+	"time"
+	"github.com/shyandsy/goctl/demo/common"
+)
+
+info(
 	author: "shyandsy"
-	date:   "2025-05-17"
-	desc:   "test api"
+	date: "2025-05-17"
+	desc: "test api"
 )
 
 type (
+	Author {
+		FirstName string `json:"firstName"`
+		LastName  string `json:"firstName"`
+		BirthYear *int   `json:"birthYear"`
+	}
+	BaseBook {
+		Name     string     `json:"name"`
+		Price    *float32   `json:"name"`
+		Authors  []Author   `json:"author"`
+		Created  time.Time  `json:"created"`
+		Modified *time.Time `json:"modified"`
+	}
 	Book {
-		Id     []int64 `json:"id"`
-		Name   string  `json:"name"`
-		Author int64   `json:"author"`
+		Id []int64 `json:"id"`
+		BaseBook
+		Created  time.Time  `json:"created"`
+		Modified *time.Time `json:"modified"`
 	}
-	BasePageReq {
-		Page    int `form:"page,default=1"`
-		PageSie int `form:"pageSize,default=100"`
-	}
+	//	BasePageReq {
+	//		Page    int `form:"page,default=1"`
+	//		PageSie int `form:"pageSize,default=100"`
+	//	}
 	BasePageResp {
 		Page  int   `json:"page"`
 		Total int64 `json:"total"`
 	}
 	GetBookReq {
-		BasePageReq
+		common.BasePageReq
 	}
 	GetBookResp {
 		BasePageResp
@@ -29,13 +47,12 @@ type (
 	}
 )
 
-@server (
-	group:  test
+@server(
+	group: test
 	prefix: /v1
 )
-service test {
+service test{
 	@doc "get books"
 	@handler getBooks
 	get /book (GetBookReq) returns (GetBookResp)
 }
-

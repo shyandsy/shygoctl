@@ -95,6 +95,10 @@ func (v *BaseApiParserVisitor) VisitDataType(ctx *DataTypeContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseApiParserVisitor) VisitQualifiedType(ctx *QualifiedTypeContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseApiParserVisitor) VisitPointerType(ctx *PointerTypeContext) interface{} {
 	return v.VisitChildren(ctx)
 }
@@ -128,6 +132,14 @@ func (v *BaseApiParserVisitor) VisitAtDoc(ctx *AtDocContext) interface{} {
 }
 
 func (v *BaseApiParserVisitor) VisitAtHandler(ctx *AtHandlerContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseApiParserVisitor) VisitAtRoles(ctx *AtRolesContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseApiParserVisitor) VisitAtFeatures(ctx *AtFeaturesContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

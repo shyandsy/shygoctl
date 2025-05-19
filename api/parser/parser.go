@@ -8,8 +8,6 @@ import (
 	"github.com/zeromicro/go-zero/tools/goctl/api/parser/g4/ast"
 	"github.com/zeromicro/go-zero/tools/goctl/api/parser/g4/gen/api"
 	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/env"
-	apiParser "github.com/zeromicro/go-zero/tools/goctl/pkg/parser/api/parser"
 )
 
 type parser struct {
@@ -21,9 +19,9 @@ type parser struct {
 // Depreacted: use tools/goctl/pkg/parser/api/parser/parser.go:18 instead,
 // it will be removed in the future.
 func Parse(filename string) (*spec.ApiSpec, error) {
-	if env.UseExperimental() {
-		return apiParser.Parse(filename, "")
-	}
+	//if env.UseExperimental() {
+	//	return apiParser.Parse(filename, "")
+	//}
 
 	astParser := ast.NewParser(ast.WithParserPrefix(filepath.Base(filename)), ast.WithParserDebug())
 	parsedApi, err := astParser.Parse(filename)
@@ -112,11 +110,18 @@ func (p parser) fillSyntax() {
 func (p parser) fillImport() {
 	if len(p.ast.Import) > 0 {
 		for _, item := range p.ast.Import {
-			p.spec.Imports = append(p.spec.Imports, spec.Import{
-				Value:   item.Value.Text(),
-				Doc:     p.stringExprs(item.DocExpr),
-				Comment: p.stringExprs([]ast.Expr{item.CommentExpr}),
-			})
+			if api.MatchRegex(item.Value.Text(), api.ImportValueRegex) {
+				// ignored
+			} else if api.MatchRegex(item.Value.Text(), api.ImportPackageRegex) {
+				p.spec.Imports = append(p.spec.Imports, spec.Import{
+					Value:   item.Value.Text(),
+					Doc:     p.stringExprs(item.DocExpr),
+					Comment: p.stringExprs([]ast.Expr{item.CommentExpr}),
+				})
+			} else {
+				panic("the import does not math both ImportValueRegex and ImportPackageRegex")
+			}
+
 		}
 	}
 }
@@ -212,6 +217,11 @@ func (p parser) astTypeToSpec(in ast.DataType) spec.Type {
 		return spec.DefineStruct{
 			RawName: raw,
 		}
+	case *ast.Qualified:
+		return spec.QualifiedType{
+			PackageName: v.Package.Text(),
+			RawName:     v.Package.Text() + "." + v.Literal.Text(),
+		}
 	case *ast.Interface:
 		return spec.InterfaceType{RawName: v.Literal.Text()}
 	case *ast.Map:
@@ -219,7 +229,7 @@ func (p parser) astTypeToSpec(in ast.DataType) spec.Type {
 	case *ast.Array:
 		return spec.ArrayType{RawName: v.ArrayExpr.Text(), Value: p.astTypeToSpec(v.Literal)}
 	case *ast.Pointer:
-		raw := v.Name.Text()
+		raw := v.Name.Expr().Text()
 		if api.IsBasicType(raw) {
 			return spec.PointerType{RawName: v.PointerExpr.Text(), Type: spec.PrimitiveType{RawName: raw}}
 		}
