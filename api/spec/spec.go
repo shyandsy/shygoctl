@@ -117,6 +117,11 @@ type (
 		RawName string
 	}
 
+	QualifiedType struct {
+		PackageName string
+		RawName     string
+	}
+
 	// MapType describes a map for api
 	MapType struct {
 		RawName string

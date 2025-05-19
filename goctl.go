@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	logx.Disable()
+	logx.MustSetup(logx.LogConf{Mode: "console", Encoding: "plain"})
 	load.Disable()
 	cmd.Execute()
 }

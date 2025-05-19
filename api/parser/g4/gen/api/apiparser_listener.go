@@ -73,6 +73,9 @@ type ApiParserListener interface {
 	// EnterDataType is called when entering the dataType production.
 	EnterDataType(c *DataTypeContext)
 
+	// EnterQualifiedType is called when entering the qualifiedType production.
+	EnterQualifiedType(c *QualifiedTypeContext)
+
 	// EnterPointerType is called when entering the pointerType production.
 	EnterPointerType(c *PointerTypeContext)
 
@@ -99,6 +102,12 @@ type ApiParserListener interface {
 
 	// EnterAtHandler is called when entering the atHandler production.
 	EnterAtHandler(c *AtHandlerContext)
+
+	// EnterAtRoles is called when entering the atRoles production.
+	EnterAtRoles(c *AtRolesContext)
+
+	// EnterAtFeatures is called when entering the atFeatures production.
+	EnterAtFeatures(c *AtFeaturesContext)
 
 	// EnterRoute is called when entering the route production.
 	EnterRoute(c *RouteContext)
@@ -187,6 +196,9 @@ type ApiParserListener interface {
 	// ExitDataType is called when exiting the dataType production.
 	ExitDataType(c *DataTypeContext)
 
+	// ExitQualifiedType is called when exiting the qualifiedType production.
+	ExitQualifiedType(c *QualifiedTypeContext)
+
 	// ExitPointerType is called when exiting the pointerType production.
 	ExitPointerType(c *PointerTypeContext)
 
@@ -213,6 +225,12 @@ type ApiParserListener interface {
 
 	// ExitAtHandler is called when exiting the atHandler production.
 	ExitAtHandler(c *AtHandlerContext)
+
+	// ExitAtRoles is called when exiting the atRoles production.
+	ExitAtRoles(c *AtRolesContext)
+
+	// ExitAtFeatures is called when exiting the atFeatures production.
+	ExitAtFeatures(c *AtFeaturesContext)
 
 	// ExitRoute is called when exiting the route production.
 	ExitRoute(c *RouteContext)

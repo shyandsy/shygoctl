@@ -1,11 +1,16 @@
 package ast
 
 import (
+	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
+
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/antlr4-go/antlr/v4"
 	"github.com/zeromicro/go-zero/tools/goctl/api/parser/g4/gen/api"
@@ -24,7 +29,8 @@ type (
 		routeMap                 map[string]PlaceHolder
 		typeMap                  map[string]PlaceHolder
 		fileMap                  map[string]PlaceHolder
-		importStatck             importStack
+		importStack              importStack
+		packages                 map[string]string
 		syntax                   *SyntaxExpr
 	}
 
@@ -44,6 +50,7 @@ func NewParser(options ...ParserOption) *Parser {
 	p.routeMap = make(map[string]PlaceHolder)
 	p.typeMap = make(map[string]PlaceHolder)
 	p.fileMap = make(map[string]PlaceHolder)
+	p.packages = make(map[string]string)
 
 	return p
 }
@@ -92,7 +99,7 @@ func (p *Parser) Parse(filename string) (*Api, error) {
 		return nil, err
 	}
 
-	p.importStatck.push(abs)
+	p.importStack.push(abs)
 	return p.parse(filename, data)
 }
 
@@ -109,7 +116,7 @@ func (p *Parser) ParseContent(content string, filename ...string) (*Api, error) 
 		abs = a
 	}
 
-	p.importStatck.push(abs)
+	p.importStack.push(abs)
 	return p.parse(f, content)
 }
 
@@ -145,46 +152,63 @@ func (p *Parser) parse(filename, content string) (*Api, error) {
 func (p *Parser) invokeImportedApi(filename string, imports []*ImportExpr) ([]*Api, error) {
 	var apiAstList []*Api
 	for _, imp := range imports {
-		dir := filepath.Dir(filename)
-		impPath := strings.ReplaceAll(imp.Value.Text(), "\"", "")
-		if !filepath.IsAbs(impPath) {
-			impPath = filepath.Join(dir, impPath)
-		}
-		// import cycle check
-		if err := p.importStatck.push(impPath); err != nil {
-			return nil, err
-		}
-		// ignore already imported file
-		if p.alreadyImported(impPath) {
-			p.importStatck.pop()
-			continue
-		}
-		p.fileMap[impPath] = PlaceHolder{}
+		if api.MatchRegex(imp.Value.Text(), api.ImportValueRegex) { // import api file
+			dir := filepath.Dir(filename)
+			impPath := strings.ReplaceAll(imp.Value.Text(), "\"", "")
+			if !filepath.IsAbs(impPath) {
+				impPath = filepath.Join(dir, impPath)
+			}
 
-		data, err := p.readContent(impPath)
-		if err != nil {
-			return nil, err
-		}
+			// make sure file exists
+			if _, err := os.Stat(impPath); err != nil {
+				return nil, errors.New(fmt.Sprintf("imported file not exists: %s", impPath))
+			}
 
-		nestedApi, err := p.invoke(impPath, data)
-		if err != nil {
-			return nil, err
-		}
+			// import cycle check
+			if err := p.importStack.push(impPath); err != nil {
+				return nil, err
+			}
 
-		err = p.valid(nestedApi)
-		if err != nil {
-			return nil, err
-		}
-		p.storeVerificationInfo(nestedApi)
-		apiAstList = append(apiAstList, nestedApi)
-		list, err := p.invokeImportedApi(impPath, nestedApi.Import)
-		p.importStatck.pop()
-		apiAstList = append(apiAstList, list...)
+			// ignore already imported file
+			if p.alreadyImported(impPath) {
+				p.importStack.pop()
+				continue
+			}
+			p.fileMap[impPath] = PlaceHolder{}
 
-		if err != nil {
-			return nil, err
+			data, err := p.readContent(impPath)
+			if err != nil {
+				return nil, err
+			}
+
+			nestedApi, err := p.invoke(impPath, data)
+			if err != nil {
+				return nil, err
+			}
+
+			if err = p.valid(nestedApi); err != nil {
+				return nil, err
+			}
+			p.storeVerificationInfo(nestedApi)
+			apiAstList = append(apiAstList, nestedApi)
+			list, err := p.invokeImportedApi(impPath, nestedApi.Import)
+			p.importStack.pop()
+			apiAstList = append(apiAstList, list...)
+
+			if err != nil {
+				logx.Error("p.invokeImportedApi", "err", err)
+				return nil, err
+			}
+		} else if api.MatchRegex(imp.Value.Text(), api.ImportPackageRegex) {
+			pk := strings.ReplaceAll(imp.Value.Text(), "\"", "")
+			pkName := pk
+			if pos := strings.LastIndexAny(pkName, "/"); pos != -1 {
+				pkName = pkName[pos:]
+			}
+			p.packages[pkName] = pk
 		}
 	}
+
 	return apiAstList, nil
 }
 
@@ -193,10 +217,25 @@ func (p *Parser) alreadyImported(filename string) bool {
 	return ok
 }
 
+func PrintStackTrace() {
+	buf := bytes.NewBuffer(nil)
+	for i := 1; ; i++ {
+		pc, file, line, ok := runtime.Caller(i)
+		if !ok {
+			break
+		}
+		// 格式化为：文件名:行号 (函数地址)
+		fmt.Fprintf(buf, "#%d: %s:%d (0x%x)\n", i, file, line, pc)
+	}
+	fmt.Println(buf.String())
+}
+
 func (p *Parser) invoke(linePrefix, content string) (v *Api, err error) {
 	defer func() {
 		p := recover()
 		if p != nil {
+			logx.Error("error occurred")
+			PrintStackTrace()
 			switch e := p.(type) {
 			case error:
 				err = e
@@ -411,7 +450,7 @@ func (p *Parser) checkServices(apiItem *Api, types map[string]TypeExpr, linePref
 					case *Literal:
 						structName = innerTp.Literal.Text()
 					case *Pointer:
-						structName = innerTp.Name.Text()
+						structName = innerTp.Name.Expr().Text()
 					}
 				}
 
@@ -476,14 +515,21 @@ func (p *Parser) checkType(linePrefix string, types map[string]TypeExpr, expr Da
 		}
 
 	case *Pointer:
-		name := v.Name.Text()
+		name := v.Name.Expr().Text()
 		if api.IsBasicType(name) {
 			return nil
 		}
-		_, ok := types[name]
-		if !ok {
-			return fmt.Errorf("%s line %d:%d can not find declaration '%s' in context",
-				linePrefix, v.Name.Line(), v.Name.Column(), name)
+		if qualifiedType, ok := v.Name.(*Qualified); ok {
+			pkName := qualifiedType.Package.Text()
+			if _, ok := p.packages[pkName]; !ok {
+				return fmt.Errorf("%s line %d:%d can not find declaration '%s' in context",
+					linePrefix, v.Name.Expr().Line(), v.Name.Expr().Column(), name)
+			}
+		} else {
+			if _, ok := types[name]; !ok {
+				return fmt.Errorf("%s line %d:%d can not find declaration '%s' in context",
+					linePrefix, v.Name.Expr().Line(), v.Name.Expr().Column(), name)
+			}
 		}
 	case *Map:
 		return p.checkType(linePrefix, types, v.Value)

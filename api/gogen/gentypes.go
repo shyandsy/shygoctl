@@ -24,8 +24,18 @@ const typesFile = "types"
 var typesTemplate string
 
 // BuildTypes gen types to string
-func BuildTypes(types []spec.Type) (string, error) {
+func BuildTypes(types []spec.Type, imports []spec.Import) (string, error) {
 	var builder strings.Builder
+
+	// import
+	if len(imports) > 0 {
+		builder.WriteString("\nimport (\n")
+		for _, ipt := range imports {
+			builder.WriteString(ipt.Value + "\n")
+		}
+		builder.WriteString("\n)\n")
+	}
+
 	first := true
 	for _, tp := range types {
 		if first {
@@ -162,7 +172,7 @@ func genTypesWithGroup(dir string, cfg *config.Config, api *spec.ApiSpec) error 
 			return types[i].Name() < types[j].Name()
 		})
 
-		if err := writeTypes(dir, group, cfg, types); err != nil {
+		if err := writeTypes(dir, group, cfg, types, api.Imports); err != nil {
 			return err
 		}
 	}
@@ -170,11 +180,11 @@ func genTypesWithGroup(dir string, cfg *config.Config, api *spec.ApiSpec) error 
 	return nil
 }
 
-func writeTypes(dir, baseFilename string, cfg *config.Config, types []spec.Type) error {
+func writeTypes(dir, baseFilename string, cfg *config.Config, types []spec.Type, imports []spec.Import) error {
 	if len(types) == 0 {
 		return nil
 	}
-	val, err := BuildTypes(types)
+	val, err := BuildTypes(types, imports)
 	if err != nil {
 		return err
 	}
@@ -208,7 +218,7 @@ func genTypes(dir string, cfg *config.Config, api *spec.ApiSpec) error {
 	if VarBoolTypeGroup {
 		return genTypesWithGroup(dir, cfg, api)
 	}
-	return writeTypes(dir, typesFile, cfg, api.Types)
+	return writeTypes(dir, typesFile, cfg, api.Types, api.Imports)
 }
 
 func writeType(writer io.Writer, tp spec.Type) error {
@@ -233,7 +243,7 @@ func writeType(writer io.Writer, tp spec.Type) error {
 func writeMember(writer io.Writer, members []spec.Member) error {
 	for _, member := range members {
 		if member.IsInline {
-			if _, err := fmt.Fprintf(writer, "%s\n", strings.Title(member.Type.Name())); err != nil {
+			if _, err := fmt.Fprintf(writer, "%s\n", member.Type.Name()); err != nil {
 				return err
 			}
 

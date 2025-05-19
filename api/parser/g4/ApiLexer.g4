@@ -5,6 +5,8 @@ ATDOC:              '@doc';
 ATHANDLER:          '@handler';
 INTERFACE:          'interface{}';
 ATSERVER:           '@server';
+ATROLES:            '@roles';
+ATFEATURES:         '@features';
 
 // Whitespace and comments
 WS:                 [ \t\r\n\u000C]+ -> channel(HIDDEN);
@@ -14,7 +16,7 @@ STRING:             '"' (~["\\] | EscapeSequence)* '"';
 RAW_STRING:         '`' (~[`\\\r\n] | EscapeSequence)+ '`';
 LINE_VALUE:         ':' [ \t]* (STRING|(~[\r\n"`]*));
 ID:         Letter LetterOrDigit*;
-
+DOT: '.';
 
 LetterOrDigit
     : Letter

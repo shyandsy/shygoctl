@@ -73,6 +73,9 @@ type ApiParserVisitor interface {
 	// Visit a parse tree produced by ApiParserParser#dataType.
 	VisitDataType(ctx *DataTypeContext) interface{}
 
+	// Visit a parse tree produced by ApiParserParser#qualifiedType.
+	VisitQualifiedType(ctx *QualifiedTypeContext) interface{}
+
 	// Visit a parse tree produced by ApiParserParser#pointerType.
 	VisitPointerType(ctx *PointerTypeContext) interface{}
 
@@ -99,6 +102,12 @@ type ApiParserVisitor interface {
 
 	// Visit a parse tree produced by ApiParserParser#atHandler.
 	VisitAtHandler(ctx *AtHandlerContext) interface{}
+
+	// Visit a parse tree produced by ApiParserParser#atRoles.
+	VisitAtRoles(ctx *AtRolesContext) interface{}
+
+	// Visit a parse tree produced by ApiParserParser#atFeatures.
+	VisitAtFeatures(ctx *AtFeaturesContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#route.
 	VisitRoute(ctx *RouteContext) interface{}

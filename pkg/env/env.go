@@ -76,9 +76,10 @@ func init() {
 		goctlEnv.SetKV(GoctlCache, cacheDir)
 	}
 
-	if !goctlEnv.HasKey(GoctlExperimental) {
-		goctlEnv.SetKV(GoctlExperimental, ExperimentalOn)
-	}
+	//if !goctlEnv.HasKey(GoctlExperimental) {
+	//	goctlEnv.SetKV(GoctlExperimental, ExperimentalOn)
+	//}
+	goctlEnv.SetKV(GoctlExperimental, ExperimentalOff)
 
 	goctlEnv.SetKV(GoctlVersion, version.BuildVersion)
 
