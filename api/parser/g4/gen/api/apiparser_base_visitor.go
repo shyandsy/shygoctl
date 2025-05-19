@@ -1,158 +1,160 @@
+// Code generated from ApiParser.g4 by ANTLR 4.13.1. DO NOT EDIT.
+
 package api // ApiParser
-import "github.com/zeromicro/antlr"
+import "github.com/antlr4-go/antlr/v4"
 
 type BaseApiParserVisitor struct {
 	*antlr.BaseParseTreeVisitor
 }
 
-func (v *BaseApiParserVisitor) VisitApi(ctx *ApiContext) any {
+func (v *BaseApiParserVisitor) VisitApi(ctx *ApiContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitSpec(ctx *SpecContext) any {
+func (v *BaseApiParserVisitor) VisitSpec(ctx *SpecContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitSyntaxLit(ctx *SyntaxLitContext) any {
+func (v *BaseApiParserVisitor) VisitSyntaxLit(ctx *SyntaxLitContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitImportSpec(ctx *ImportSpecContext) any {
+func (v *BaseApiParserVisitor) VisitImportSpec(ctx *ImportSpecContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitImportLit(ctx *ImportLitContext) any {
+func (v *BaseApiParserVisitor) VisitImportLit(ctx *ImportLitContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitImportBlock(ctx *ImportBlockContext) any {
+func (v *BaseApiParserVisitor) VisitImportBlock(ctx *ImportBlockContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitImportBlockValue(ctx *ImportBlockValueContext) any {
+func (v *BaseApiParserVisitor) VisitImportBlockValue(ctx *ImportBlockValueContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitImportValue(ctx *ImportValueContext) any {
+func (v *BaseApiParserVisitor) VisitImportValue(ctx *ImportValueContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitInfoSpec(ctx *InfoSpecContext) any {
+func (v *BaseApiParserVisitor) VisitInfoSpec(ctx *InfoSpecContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeSpec(ctx *TypeSpecContext) any {
+func (v *BaseApiParserVisitor) VisitTypeSpec(ctx *TypeSpecContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeLit(ctx *TypeLitContext) any {
+func (v *BaseApiParserVisitor) VisitTypeLit(ctx *TypeLitContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeBlock(ctx *TypeBlockContext) any {
+func (v *BaseApiParserVisitor) VisitTypeBlock(ctx *TypeBlockContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeLitBody(ctx *TypeLitBodyContext) any {
+func (v *BaseApiParserVisitor) VisitTypeLitBody(ctx *TypeLitBodyContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeBlockBody(ctx *TypeBlockBodyContext) any {
+func (v *BaseApiParserVisitor) VisitTypeBlockBody(ctx *TypeBlockBodyContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeStruct(ctx *TypeStructContext) any {
+func (v *BaseApiParserVisitor) VisitTypeStruct(ctx *TypeStructContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeAlias(ctx *TypeAliasContext) any {
+func (v *BaseApiParserVisitor) VisitTypeAlias(ctx *TypeAliasContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeBlockStruct(ctx *TypeBlockStructContext) any {
+func (v *BaseApiParserVisitor) VisitTypeBlockStruct(ctx *TypeBlockStructContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitTypeBlockAlias(ctx *TypeBlockAliasContext) any {
+func (v *BaseApiParserVisitor) VisitTypeBlockAlias(ctx *TypeBlockAliasContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitField(ctx *FieldContext) any {
+func (v *BaseApiParserVisitor) VisitField(ctx *FieldContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitNormalField(ctx *NormalFieldContext) any {
+func (v *BaseApiParserVisitor) VisitNormalField(ctx *NormalFieldContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitAnonymousFiled(ctx *AnonymousFiledContext) any {
+func (v *BaseApiParserVisitor) VisitAnonymousFiled(ctx *AnonymousFiledContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitDataType(ctx *DataTypeContext) any {
+func (v *BaseApiParserVisitor) VisitDataType(ctx *DataTypeContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitPointerType(ctx *PointerTypeContext) any {
+func (v *BaseApiParserVisitor) VisitPointerType(ctx *PointerTypeContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitMapType(ctx *MapTypeContext) any {
+func (v *BaseApiParserVisitor) VisitMapType(ctx *MapTypeContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitArrayType(ctx *ArrayTypeContext) any {
+func (v *BaseApiParserVisitor) VisitArrayType(ctx *ArrayTypeContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitServiceSpec(ctx *ServiceSpecContext) any {
+func (v *BaseApiParserVisitor) VisitServiceSpec(ctx *ServiceSpecContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitAtServer(ctx *AtServerContext) any {
+func (v *BaseApiParserVisitor) VisitAtServer(ctx *AtServerContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitServiceApi(ctx *ServiceApiContext) any {
+func (v *BaseApiParserVisitor) VisitServiceApi(ctx *ServiceApiContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitServiceRoute(ctx *ServiceRouteContext) any {
+func (v *BaseApiParserVisitor) VisitServiceRoute(ctx *ServiceRouteContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitAtDoc(ctx *AtDocContext) any {
+func (v *BaseApiParserVisitor) VisitAtDoc(ctx *AtDocContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitAtHandler(ctx *AtHandlerContext) any {
+func (v *BaseApiParserVisitor) VisitAtHandler(ctx *AtHandlerContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitRoute(ctx *RouteContext) any {
+func (v *BaseApiParserVisitor) VisitRoute(ctx *RouteContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitBody(ctx *BodyContext) any {
+func (v *BaseApiParserVisitor) VisitBody(ctx *BodyContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitReplybody(ctx *ReplybodyContext) any {
+func (v *BaseApiParserVisitor) VisitReplybody(ctx *ReplybodyContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitKvLit(ctx *KvLitContext) any {
+func (v *BaseApiParserVisitor) VisitKvLit(ctx *KvLitContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitServiceName(ctx *ServiceNameContext) any {
+func (v *BaseApiParserVisitor) VisitServiceName(ctx *ServiceNameContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitPath(ctx *PathContext) any {
+func (v *BaseApiParserVisitor) VisitPath(ctx *PathContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseApiParserVisitor) VisitPathItem(ctx *PathItemContext) any {
+func (v *BaseApiParserVisitor) VisitPathItem(ctx *PathItemContext) interface{} {
 	return v.VisitChildren(ctx)
 }

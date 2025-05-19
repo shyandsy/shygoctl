@@ -1,123 +1,123 @@
-// Code generated from C:/Users/keson/GolandProjects/go-zero/tools/goctl/api/parser/g4\ApiParser.g4 by ANTLR 4.9. DO NOT EDIT.
+// Code generated from ApiParser.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package api // ApiParser
-import "github.com/zeromicro/antlr"
+import "github.com/antlr4-go/antlr/v4"
 
 // A complete Visitor for a parse tree produced by ApiParserParser.
 type ApiParserVisitor interface {
 	antlr.ParseTreeVisitor
 
 	// Visit a parse tree produced by ApiParserParser#api.
-	VisitApi(ctx *ApiContext) any
+	VisitApi(ctx *ApiContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#spec.
-	VisitSpec(ctx *SpecContext) any
+	VisitSpec(ctx *SpecContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#syntaxLit.
-	VisitSyntaxLit(ctx *SyntaxLitContext) any
+	VisitSyntaxLit(ctx *SyntaxLitContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#importSpec.
-	VisitImportSpec(ctx *ImportSpecContext) any
+	VisitImportSpec(ctx *ImportSpecContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#importLit.
-	VisitImportLit(ctx *ImportLitContext) any
+	VisitImportLit(ctx *ImportLitContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#importBlock.
-	VisitImportBlock(ctx *ImportBlockContext) any
+	VisitImportBlock(ctx *ImportBlockContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#importBlockValue.
-	VisitImportBlockValue(ctx *ImportBlockValueContext) any
+	VisitImportBlockValue(ctx *ImportBlockValueContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#importValue.
-	VisitImportValue(ctx *ImportValueContext) any
+	VisitImportValue(ctx *ImportValueContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#infoSpec.
-	VisitInfoSpec(ctx *InfoSpecContext) any
+	VisitInfoSpec(ctx *InfoSpecContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeSpec.
-	VisitTypeSpec(ctx *TypeSpecContext) any
+	VisitTypeSpec(ctx *TypeSpecContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeLit.
-	VisitTypeLit(ctx *TypeLitContext) any
+	VisitTypeLit(ctx *TypeLitContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeBlock.
-	VisitTypeBlock(ctx *TypeBlockContext) any
+	VisitTypeBlock(ctx *TypeBlockContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeLitBody.
-	VisitTypeLitBody(ctx *TypeLitBodyContext) any
+	VisitTypeLitBody(ctx *TypeLitBodyContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeBlockBody.
-	VisitTypeBlockBody(ctx *TypeBlockBodyContext) any
+	VisitTypeBlockBody(ctx *TypeBlockBodyContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeStruct.
-	VisitTypeStruct(ctx *TypeStructContext) any
+	VisitTypeStruct(ctx *TypeStructContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeAlias.
-	VisitTypeAlias(ctx *TypeAliasContext) any
+	VisitTypeAlias(ctx *TypeAliasContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeBlockStruct.
-	VisitTypeBlockStruct(ctx *TypeBlockStructContext) any
+	VisitTypeBlockStruct(ctx *TypeBlockStructContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#typeBlockAlias.
-	VisitTypeBlockAlias(ctx *TypeBlockAliasContext) any
+	VisitTypeBlockAlias(ctx *TypeBlockAliasContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#field.
-	VisitField(ctx *FieldContext) any
+	VisitField(ctx *FieldContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#normalField.
-	VisitNormalField(ctx *NormalFieldContext) any
+	VisitNormalField(ctx *NormalFieldContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#anonymousFiled.
-	VisitAnonymousFiled(ctx *AnonymousFiledContext) any
+	VisitAnonymousFiled(ctx *AnonymousFiledContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#dataType.
-	VisitDataType(ctx *DataTypeContext) any
+	VisitDataType(ctx *DataTypeContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#pointerType.
-	VisitPointerType(ctx *PointerTypeContext) any
+	VisitPointerType(ctx *PointerTypeContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#mapType.
-	VisitMapType(ctx *MapTypeContext) any
+	VisitMapType(ctx *MapTypeContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#arrayType.
-	VisitArrayType(ctx *ArrayTypeContext) any
+	VisitArrayType(ctx *ArrayTypeContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#serviceSpec.
-	VisitServiceSpec(ctx *ServiceSpecContext) any
+	VisitServiceSpec(ctx *ServiceSpecContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#atServer.
-	VisitAtServer(ctx *AtServerContext) any
+	VisitAtServer(ctx *AtServerContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#serviceApi.
-	VisitServiceApi(ctx *ServiceApiContext) any
+	VisitServiceApi(ctx *ServiceApiContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#serviceRoute.
-	VisitServiceRoute(ctx *ServiceRouteContext) any
+	VisitServiceRoute(ctx *ServiceRouteContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#atDoc.
-	VisitAtDoc(ctx *AtDocContext) any
+	VisitAtDoc(ctx *AtDocContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#atHandler.
-	VisitAtHandler(ctx *AtHandlerContext) any
+	VisitAtHandler(ctx *AtHandlerContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#route.
-	VisitRoute(ctx *RouteContext) any
+	VisitRoute(ctx *RouteContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#body.
-	VisitBody(ctx *BodyContext) any
+	VisitBody(ctx *BodyContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#replybody.
-	VisitReplybody(ctx *ReplybodyContext) any
+	VisitReplybody(ctx *ReplybodyContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#kvLit.
-	VisitKvLit(ctx *KvLitContext) any
+	VisitKvLit(ctx *KvLitContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#serviceName.
-	VisitServiceName(ctx *ServiceNameContext) any
+	VisitServiceName(ctx *ServiceNameContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#path.
-	VisitPath(ctx *PathContext) any
+	VisitPath(ctx *PathContext) interface{}
 
 	// Visit a parse tree produced by ApiParserParser#pathItem.
-	VisitPathItem(ctx *PathItemContext) any
+	VisitPathItem(ctx *PathItemContext) interface{}
 }

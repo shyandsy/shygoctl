@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/zeromicro/antlr"
+	"github.com/antlr4-go/antlr/v4"
 	"github.com/zeromicro/go-zero/tools/goctl/api/parser/g4/gen/api"
 	"github.com/zeromicro/go-zero/tools/goctl/util/console"
 )
@@ -250,11 +250,11 @@ func EqualDoc(spec1, spec2 Spec) bool {
 }
 
 func (v *ApiVisitor) getDoc(t TokenStream) []Expr {
-	return v.getHiddenTokensToLeft(t, api.COMMENTS, false)
+	return v.getHiddenTokensToLeft(t, api.COMEMNTS, false)
 }
 
 func (v *ApiVisitor) getComment(t TokenStream) Expr {
-	list := v.getHiddenTokensToRight(t, api.COMMENTS)
+	list := v.getHiddenTokensToRight(t, api.COMEMNTS)
 	if len(list) == 0 {
 		return nil
 	}
