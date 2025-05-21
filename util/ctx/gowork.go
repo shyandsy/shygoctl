@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 
-	"github.com/zeromicro/go-zero/tools/goctl/rpc/execx"
+	"github.com/shyandsy/shygoctl/rpc/execx"
 )
 
 // UpdateGoWorkIfExist updates go work if workDir is in a go workspace

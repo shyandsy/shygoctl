@@ -4,10 +4,10 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/golang"
-	"github.com/zeromicro/go-zero/tools/goctl/util/console"
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
-	"github.com/zeromicro/go-zero/tools/goctl/vars"
+	"github.com/shyandsy/shygoctl/pkg/golang"
+	"github.com/shyandsy/shygoctl/util/console"
+	"github.com/shyandsy/shygoctl/util/pathx"
+	"github.com/shyandsy/shygoctl/vars"
 )
 
 func Install(cacheDir, name string, installFn func(dest string) (string, error)) (string, error) {

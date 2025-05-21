@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"unicode"
 
-	"github.com/zeromicro/go-zero/tools/goctl/api/parser/g4/ast"
-	"github.com/zeromicro/go-zero/tools/goctl/api/parser/g4/gen/api"
-	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
+	"github.com/shyandsy/shygoctl/api/parser/g4/ast"
+	"github.com/shyandsy/shygoctl/api/parser/g4/gen/api"
+	"github.com/shyandsy/shygoctl/api/spec"
 )
 
 type parser struct {

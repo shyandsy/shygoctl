@@ -10,10 +10,10 @@ import (
 	"text/template"
 
 	"github.com/gookit/color"
+	"github.com/shyandsy/shygoctl/util"
+	"github.com/shyandsy/shygoctl/util/env"
+	"github.com/shyandsy/shygoctl/util/pathx"
 	"github.com/spf13/cobra"
-	"github.com/zeromicro/go-zero/tools/goctl/util"
-	"github.com/zeromicro/go-zero/tools/goctl/util/env"
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
 )
 
 const (

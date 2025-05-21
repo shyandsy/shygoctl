@@ -3,8 +3,8 @@ package swagger
 import (
 	"testing"
 
+	"github.com/shyandsy/shygoctl/api/spec"
 	"github.com/stretchr/testify/assert"
-	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
 )
 
 func TestRangeValueFromOptions(t *testing.T) {

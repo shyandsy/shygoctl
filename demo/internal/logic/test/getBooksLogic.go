@@ -3,8 +3,8 @@ package test
 import (
 	"context"
 
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/svc"
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/types"
+	"github.com/shyandsy/shygoctl/demo/internal/svc"
+	"github.com/shyandsy/shygoctl/demo/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

@@ -5,10 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
-	conf "github.com/zeromicro/go-zero/tools/goctl/config"
-	"github.com/zeromicro/go-zero/tools/goctl/rpc/parser"
-	"github.com/zeromicro/go-zero/tools/goctl/util/format"
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
+	conf "github.com/shyandsy/shygoctl/config"
+	"github.com/shyandsy/shygoctl/rpc/parser"
+	"github.com/shyandsy/shygoctl/util/format"
+	"github.com/shyandsy/shygoctl/util/pathx"
 )
 
 //go:embed config.tpl

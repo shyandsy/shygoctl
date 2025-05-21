@@ -4,9 +4,9 @@ import (
 	_ "embed"
 	"strings"
 
-	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
-	"github.com/zeromicro/go-zero/tools/goctl/config"
-	"github.com/zeromicro/go-zero/tools/goctl/util/format"
+	"github.com/shyandsy/shygoctl/api/spec"
+	"github.com/shyandsy/shygoctl/config"
+	"github.com/shyandsy/shygoctl/util/format"
 )
 
 //go:embed middleware.tpl

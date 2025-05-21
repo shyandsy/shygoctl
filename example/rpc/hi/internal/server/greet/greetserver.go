@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	greetlogic "github.com/zeromicro/go-zero/tools/goctl/example/rpc/hi/internal/logic/greet"
-	"github.com/zeromicro/go-zero/tools/goctl/example/rpc/hi/internal/svc"
-	"github.com/zeromicro/go-zero/tools/goctl/example/rpc/hi/pb/hi"
+	greetlogic "github.com/shyandsy/shygoctl/example/rpc/hi/internal/logic/greet"
+	"github.com/shyandsy/shygoctl/example/rpc/hi/internal/svc"
+	"github.com/shyandsy/shygoctl/example/rpc/hi/pb/hi"
 )
 
 type GreetServer struct {

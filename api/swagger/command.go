@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/shyandsy/shygoctl/pkg/parser/api/parser"
+	"github.com/shyandsy/shygoctl/util/pathx"
 	"github.com/spf13/cobra"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/parser/api/parser"
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
 	"gopkg.in/yaml.v2"
 )
 

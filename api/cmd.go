@@ -3,18 +3,18 @@ package api
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/zeromicro/go-zero/tools/goctl/api/apigen"
-	"github.com/zeromicro/go-zero/tools/goctl/api/dartgen"
-	"github.com/zeromicro/go-zero/tools/goctl/api/docgen"
-	"github.com/zeromicro/go-zero/tools/goctl/api/format"
-	"github.com/zeromicro/go-zero/tools/goctl/api/gogen"
-	"github.com/zeromicro/go-zero/tools/goctl/api/ktgen"
-	"github.com/zeromicro/go-zero/tools/goctl/api/new"
-	"github.com/zeromicro/go-zero/tools/goctl/api/swagger"
-	"github.com/zeromicro/go-zero/tools/goctl/api/validate"
-	"github.com/zeromicro/go-zero/tools/goctl/config"
-	"github.com/zeromicro/go-zero/tools/goctl/internal/cobrax"
-	"github.com/zeromicro/go-zero/tools/goctl/plugin"
+	"github.com/shyandsy/shygoctl/api/apigen"
+	"github.com/shyandsy/shygoctl/api/dartgen"
+	"github.com/shyandsy/shygoctl/api/docgen"
+	"github.com/shyandsy/shygoctl/api/format"
+	"github.com/shyandsy/shygoctl/api/gogen"
+	"github.com/shyandsy/shygoctl/api/ktgen"
+	"github.com/shyandsy/shygoctl/api/new"
+	"github.com/shyandsy/shygoctl/api/swagger"
+	"github.com/shyandsy/shygoctl/api/validate"
+	"github.com/shyandsy/shygoctl/config"
+	"github.com/shyandsy/shygoctl/internal/cobrax"
+	"github.com/shyandsy/shygoctl/plugin"
 )
 
 var (

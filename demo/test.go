@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/config"
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/handler"
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/svc"
+	"github.com/shyandsy/shygoctl/demo/internal/config"
+	"github.com/shyandsy/shygoctl/demo/internal/handler"
+	"github.com/shyandsy/shygoctl/demo/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

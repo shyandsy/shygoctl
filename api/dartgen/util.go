@@ -7,8 +7,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
-	"github.com/zeromicro/go-zero/tools/goctl/api/util"
+	"github.com/shyandsy/shygoctl/api/spec"
+	"github.com/shyandsy/shygoctl/api/util"
 )
 
 const (
