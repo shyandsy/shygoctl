@@ -1,6 +1,7 @@
 # shyandsy/shygoctl
 
-This is aa customized goctl version based on v1.8.3, which support external types in dto
+This is an customized goctl version based on v1.8.3, which support external types in dto
+- [x] generate golang code for gozero
 
 > original package: https://github.com/zeromicro/go-zero 
 
@@ -17,13 +18,13 @@ support external type in dto, we can specific the source package in import state
 ```go
 import (
 	"time"
-    "github.com/shyandsy/shy-goctl/common"
+    "github.com/shyandsy/shygoctl/common"   // specific the source package path
 )
 
 type (
     Book {
         Id []int64 `json:"id"`
-		common.BaseBook
+		common.BaseBook         // use types defined in common package
         Created  time.Time  `json:"created"`
         Modified *time.Time `json:"modified"`
     }
@@ -40,13 +41,13 @@ it wille generate type.go like below
 package types
 
 import (
-	"github.com/shyandsy/shy-goctl/common"
+	"github.com/shyandsy/shygoctl/common"
 	"time"
 )
 
 Book {
     Id []int64 `json:"id"`
-    BaseBook
+    common.BaseBook
     Created  time.Time  `json:"created"`
     Modified *time.Time `json:"modified"`
 }
