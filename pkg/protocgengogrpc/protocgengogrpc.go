@@ -3,10 +3,10 @@ package protocgengogrpc
 import (
 	"strings"
 
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/goctl"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/golang"
-	"github.com/zeromicro/go-zero/tools/goctl/rpc/execx"
-	"github.com/zeromicro/go-zero/tools/goctl/util/env"
+	"github.com/shyandsy/shygoctl/pkg/goctl"
+	"github.com/shyandsy/shygoctl/pkg/golang"
+	"github.com/shyandsy/shygoctl/rpc/execx"
+	"github.com/shyandsy/shygoctl/util/env"
 )
 
 const (

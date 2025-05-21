@@ -9,13 +9,13 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/shyandsy/shygoctl/api/spec"
+	apiutil "github.com/shyandsy/shygoctl/api/util"
+	"github.com/shyandsy/shygoctl/config"
+	"github.com/shyandsy/shygoctl/internal/version"
+	"github.com/shyandsy/shygoctl/util"
+	"github.com/shyandsy/shygoctl/util/format"
 	"github.com/zeromicro/go-zero/core/collection"
-	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
-	apiutil "github.com/zeromicro/go-zero/tools/goctl/api/util"
-	"github.com/zeromicro/go-zero/tools/goctl/config"
-	"github.com/zeromicro/go-zero/tools/goctl/internal/version"
-	"github.com/zeromicro/go-zero/tools/goctl/util"
-	"github.com/zeromicro/go-zero/tools/goctl/util/format"
 )
 
 const typesFile = "types"

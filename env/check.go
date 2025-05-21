@@ -5,12 +5,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/shyandsy/shygoctl/pkg/env"
+	"github.com/shyandsy/shygoctl/pkg/protoc"
+	"github.com/shyandsy/shygoctl/pkg/protocgengo"
+	"github.com/shyandsy/shygoctl/pkg/protocgengogrpc"
+	"github.com/shyandsy/shygoctl/util/console"
 	"github.com/spf13/cobra"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/env"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/protoc"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/protocgengo"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/protocgengogrpc"
-	"github.com/zeromicro/go-zero/tools/goctl/util/console"
 )
 
 type bin struct {

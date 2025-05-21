@@ -1,6 +1,6 @@
 package swagger
 
-import "github.com/zeromicro/go-zero/tools/goctl/api/spec"
+import "github.com/shyandsy/shygoctl/api/spec"
 
 func fillAllStructs(api *spec.ApiSpec) {
 	var (

@@ -3,10 +3,10 @@ package test
 import (
 	"net/http"
 
+	"github.com/shyandsy/shygoctl/demo/internal/logic/test"
+	"github.com/shyandsy/shygoctl/demo/internal/svc"
+	"github.com/shyandsy/shygoctl/demo/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/logic/test"
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/svc"
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/types"
 )
 
 // get books

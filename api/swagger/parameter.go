@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/go-openapi/spec"
-	apiSpec "github.com/zeromicro/go-zero/tools/goctl/api/spec"
+	apiSpec "github.com/shyandsy/shygoctl/api/spec"
 )
 
 func isPostJson(ctx Context, method string, tp apiSpec.Type) (string, bool) {

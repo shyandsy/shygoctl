@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
+	"github.com/shyandsy/shygoctl/api/spec"
 )
 
 func consumesFromTypeOrDef(ctx Context, method string, tp spec.Type) []string {

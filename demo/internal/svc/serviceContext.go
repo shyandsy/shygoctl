@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/config"
+	"github.com/shyandsy/shygoctl/demo/internal/config"
 )
 
 type ServiceContext struct {

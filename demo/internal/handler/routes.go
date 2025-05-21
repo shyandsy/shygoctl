@@ -6,8 +6,8 @@ package handler
 import (
 	"net/http"
 
-	test "github.com/zeromicro/go-zero/tools/goctl/demo/internal/handler/test"
-	"github.com/zeromicro/go-zero/tools/goctl/demo/internal/svc"
+	test "github.com/shyandsy/shygoctl/demo/internal/handler/test"
+	"github.com/shyandsy/shygoctl/demo/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

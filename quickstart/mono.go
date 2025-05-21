@@ -5,11 +5,11 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/shyandsy/shygoctl/api/gogen"
+	"github.com/shyandsy/shygoctl/pkg/golang"
+	"github.com/shyandsy/shygoctl/util"
+	"github.com/shyandsy/shygoctl/util/pathx"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/tools/goctl/api/gogen"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/golang"
-	"github.com/zeromicro/go-zero/tools/goctl/util"
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
 )
 
 var (
