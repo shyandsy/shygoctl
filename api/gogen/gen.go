@@ -1,11 +1,13 @@
 package gogen
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 	"path"
 	"path/filepath"
+	"plugin"
 	"strconv"
 	"strings"
 	"sync"
@@ -14,6 +16,7 @@ import (
 	"github.com/gookit/color"
 	apiformat "github.com/shyandsy/shygoctl/api/format"
 	"github.com/shyandsy/shygoctl/api/parser"
+	"github.com/shyandsy/shygoctl/api/spec"
 	apiutil "github.com/shyandsy/shygoctl/api/util"
 	"github.com/shyandsy/shygoctl/config"
 	"github.com/shyandsy/shygoctl/pkg/golang"
@@ -82,6 +85,36 @@ func DoGenProject(apiFile, dir, style string, withTest bool) error {
 
 	if err := api.Validate(); err != nil {
 		return err
+	}
+
+	// load plugin
+	p, err := plugin.Open("gozero_template_plugin.so")
+	if err != nil {
+		panic(fmt.Sprintf("插件加载失败: %v", err))
+	}
+
+	// 查找方法符号
+	//DoGenProject
+	method, err := p.Lookup("DoGenProject")
+	if err != nil {
+		panic(fmt.Sprintf("符号查找失败: %v", err))
+	}
+
+	doGenProject, ok := method.(func(api *spec.ApiSpec, dir, style string) error)
+	if !ok {
+		panic("函数签名不匹配，请检查参数类型")
+	}
+
+	if err := doGenProject(api, "demo", "goZero"); err != nil {
+		panic("函数签名不匹配，请检查参数类型")
+	}
+
+	spec, err := json.Marshal(*api)
+	if err != nil {
+		panic("cannot marshal api specification")
+	}
+	if err := os.WriteFile("test.json", spec, 0666); err != nil {
+		panic("fail to write api specification file")
 	}
 
 	cfg, err := config.NewConfig(style)
