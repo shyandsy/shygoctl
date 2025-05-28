@@ -167,6 +167,8 @@ type (
 	}
 )
 
+/////////////////////////////////////////////////////////////////////////
+
 func (p DefineStruct) MarshalJSON() ([]byte, error) {
 	type Alias DefineStruct
 	return json.Marshal(&struct {
@@ -177,6 +179,7 @@ func (p DefineStruct) MarshalJSON() ([]byte, error) {
 		Alias: (Alias)(p),
 	})
 }
+
 func (p NestedStruct) MarshalJSON() ([]byte, error) {
 	type Alias NestedStruct
 	return json.Marshal(&struct {
@@ -198,6 +201,7 @@ func (p PrimitiveType) MarshalJSON() ([]byte, error) {
 		Alias: (Alias)(p),
 	})
 }
+
 func (p QualifiedType) MarshalJSON() ([]byte, error) {
 	type Alias QualifiedType
 	return json.Marshal(&struct {
