@@ -3,4 +3,3 @@ dist
 goctl
 demo/**/*
 !demo/*.api
-!demo/*.json
