@@ -1,6 +1,11 @@
 package spec
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/zeromicro/go-zero/core/logx"
+)
 
 // RoutePrefixKey is the prefix keyword for the routes.
 const RoutePrefixKey = "prefix"
@@ -162,253 +167,270 @@ type (
 	}
 )
 
-//////////////////////////////////////////////////////////////////////
-
 func (p DefineStruct) MarshalJSON() ([]byte, error) {
+	type Alias DefineStruct
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "DefineStruct", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "DefineStruct", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
 func (p NestedStruct) MarshalJSON() ([]byte, error) {
+	type Alias NestedStruct
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "NestedStruct", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "NestedStruct", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
+
 func (p PrimitiveType) MarshalJSON() ([]byte, error) {
+	type Alias PrimitiveType
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "PrimitiveType", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "PrimitiveType", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
 func (p QualifiedType) MarshalJSON() ([]byte, error) {
+	type Alias QualifiedType
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "QualifiedType", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "QualifiedType", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
+
 func (p MapType) MarshalJSON() ([]byte, error) {
+	type Alias MapType
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "MapType", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "MapType", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
+
 func (p ArrayType) MarshalJSON() ([]byte, error) {
+	type Alias ArrayType
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "ArrayType", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "ArrayType", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
+
 func (p InterfaceType) MarshalJSON() ([]byte, error) {
+	type Alias InterfaceType
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "InterfaceType", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "InterfaceType", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
+
 func (p PointerType) MarshalJSON() ([]byte, error) {
+	type Alias PointerType
 	return json.Marshal(&struct {
-		Action string `json:"action"` // 注入类型标识
-		Type
+		Kind string `json:"kind"` // 提取类型标识
+		Alias
 	}{
-		Action: "PointerType", // 类型标识值
-		Type:   (Type)(p),
+		Kind:  "PointerType", // 类型标识值
+		Alias: (Alias)(p),
 	})
 }
 
 /////////////////////////////////////////////////////////////////////////
 
-func (p *Member) UnmarshalJSON(data []byte) error {
-	//to: Type    Type
-	// implements:
-	// - DefineStruct
-	// - NestedStruct
-	// - PrimitiveType
-	// - QualifiedType
-	// - MapType
-	// - ArrayType
-	// - InterfaceType
-	// - PointerType
-	type tempMember struct {
-		Name        string
-		Tag         string
-		Comment     string
-		Docs        Doc
-		IsInline    bool
-		TypePayload *json.RawMessage `json:"Type"` //Type Type
+func (p *ApiSpec) UnmarshalJSON(data []byte) error {
+	type Alias ApiSpec // 创建别名避免递归调用
+	aux := &struct {
+		*Alias
+		Types []json.RawMessage //`json:"types"`  // 延迟解析原始数据[8](@ref)
+	}{
+		Alias: (*Alias)(p),
 	}
-	temp := tempMember{}
-	if err := json.Unmarshal(data, &temp); err != nil {
+
+	if err := json.Unmarshal(data, aux); err != nil {
 		return err
 	}
 
-	switch temp["method"] {
-	case "credit_card":
-		cc := &CreditCard{}
-		if err := json.Unmarshal(data, cc); err != nil {
+	p.Types = make([]Type, 0)
+	for _, raw := range aux.Types {
+		tp, err := createType(raw)
+		if err != nil {
 			return err
 		}
-		*p = cc
-	case "paypal":
-		pp := &PayPal{}
-		if err := json.Unmarshal(data, pp); err != nil {
-			return err
-		}
-		*p = pp
+		p.Types = append(p.Types, tp)
 	}
 	return nil
 }
 
 func (p *Route) UnmarshalJSON(data []byte) error {
-	// to: RequestType        Type
-	// to: ResponseType       Type
-	// implements:
-	// - DefineStruct
-	// - NestedStruct
-	// - PrimitiveType
-	// - QualifiedType
-	// - MapType
-	// - ArrayType
-	// - InterfaceType
-	// - PointerType
-	var temp map[string]interface{}
-	if err := json.Unmarshal(data, &temp); err != nil {
+	type Alias Route // 创建别名避免递归调用
+	aux := &struct {
+		*Alias
+		RequestType  json.RawMessage `json:"RequestType"`
+		ResponseType json.RawMessage `json:"ResponseType"`
+	}{
+		Alias: (*Alias)(p),
+	}
+	if err := json.Unmarshal(data, aux); err != nil {
 		return err
 	}
 
-	switch temp["method"] {
-	case "credit_card":
-		cc := &CreditCard{}
-		if err := json.Unmarshal(data, cc); err != nil {
-			return err
-		}
-		*p = cc
-	case "paypal":
-		pp := &PayPal{}
-		if err := json.Unmarshal(data, pp); err != nil {
-			return err
-		}
-		*p = pp
+	tp, err := createType(aux.RequestType)
+	if err != nil {
+		return err
 	}
+	p.RequestType = tp
+
+	tp, err = createType(aux.ResponseType)
+	if err != nil {
+		return err
+	}
+	p.ResponseType = tp
+
+	return nil
+}
+
+func (p *Member) UnmarshalJSON(data []byte) error {
+	type Alias Member // 创建别名避免递归调用
+	aux := &struct {
+		*Alias
+		Type json.RawMessage
+	}{
+		Alias: (*Alias)(p),
+	}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+
+	tp, err := createType(aux.Type)
+	if err != nil {
+		return err
+	}
+	p.Type = tp
+
 	return nil
 }
 
 func (p *MapType) UnmarshalJSON(data []byte) error {
-	//to: Value Type
-	// implements:
-	// - DefineStruct
-	// - NestedStruct
-	// - PrimitiveType
-	// - QualifiedType
-	// - MapType
-	// - ArrayType
-	// - InterfaceType
-	// - PointerType
-	var temp map[string]interface{}
-	if err := json.Unmarshal(data, &temp); err != nil {
+	type Alias MapType
+	aux := &struct {
+		*Alias
+		Value json.RawMessage
+	}{
+		Alias: (*Alias)(p),
+	}
+	if err := json.Unmarshal(data, aux); err != nil {
 		return err
 	}
 
-	switch temp["method"] {
-	case "credit_card":
-		cc := &CreditCard{}
-		if err := json.Unmarshal(data, cc); err != nil {
-			return err
-		}
-		*p = cc
-	case "paypal":
-		pp := &PayPal{}
-		if err := json.Unmarshal(data, pp); err != nil {
-			return err
-		}
-		*p = pp
+	tp, err := createType(aux.Value)
+	if err != nil {
+		return err
 	}
+	p.Value = tp
+
 	return nil
 }
 
 func (p *ArrayType) UnmarshalJSON(data []byte) error {
-	// to: Value   Type
-	// implements:
-	// - DefineStruct
-	// - NestedStruct
-	// - PrimitiveType
-	// - QualifiedType
-	// - MapType
-	// - ArrayType
-	// - InterfaceType
-	// - PointerType
-	var temp map[string]interface{}
-	if err := json.Unmarshal(data, &temp); err != nil {
+	type Alias ArrayType
+	aux := &struct {
+		*Alias
+		Value json.RawMessage
+	}{
+		Alias: (*Alias)(p),
+	}
+	if err := json.Unmarshal(data, aux); err != nil {
 		return err
 	}
 
-	switch temp["method"] {
-	case "credit_card":
-		cc := &CreditCard{}
-		if err := json.Unmarshal(data, cc); err != nil {
-			return err
-		}
-		*p = cc
-	case "paypal":
-		pp := &PayPal{}
-		if err := json.Unmarshal(data, pp); err != nil {
-			return err
-		}
-		*p = pp
+	tp, err := createType(aux.Value)
+	if err != nil {
+		return err
 	}
+	p.Value = tp
+
 	return nil
 }
 
-func (p *PointerType) UnmarshalJSON(data []byte) error {
-	//to: Type    Type
-	// implements:
-	// - DefineStruct
-	// - NestedStruct
-	// - PrimitiveType
-	// - QualifiedType
-	// - MapType
-	// - ArrayType
-	// - InterfaceType
-	// - PointerType
-	var temp map[string]interface{}
-	if err := json.Unmarshal(data, &temp); err != nil {
-		return err
+func createType(raw json.RawMessage) (Type, error) {
+	var base struct {
+		Kind string `json:"kind"`
 	}
 
-	switch temp["method"] {
-	case "credit_card":
-		cc := &CreditCard{}
-		if err := json.Unmarshal(data, cc); err != nil {
-			return err
-		}
-		*p = cc
-	case "paypal":
-		pp := &PayPal{}
-		if err := json.Unmarshal(data, pp); err != nil {
-			return err
-		}
-		*p = pp
+	// process RequestType
+	if err := json.Unmarshal(raw, &base); err != nil {
+		return nil, err
 	}
-	return nil
+
+	switch base.Kind {
+	case "DefineStruct":
+		var tp DefineStruct
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	case "NestedStruct":
+		var tp NestedStruct
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	case "PrimitiveType":
+		var tp PrimitiveType
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	case "QualifiedType":
+		var tp QualifiedType
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	case "MapType":
+		var tp MapType
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	case "ArrayType":
+		var tp ArrayType
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	case "InterfaceType":
+		var tp InterfaceType
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	case "PointerType":
+		var tp QualifiedType
+		if err := json.Unmarshal(raw, &tp); err != nil {
+			return nil, err
+		}
+		return tp, nil
+	default:
+		logx.Error("unknown type: %s", base.Kind)
+		return nil, fmt.Errorf("unknown type: %s", base.Kind)
+	}
 }
