@@ -21,6 +21,8 @@ var apiTemplate string
 var (
 	// VarStringHome describes the goctl home.
 	VarStringHome string
+	// TemplatePluginName template plugin name
+	TemplatePluginName string
 	// VarStringRemote describes the remote git repository.
 	VarStringRemote string
 	// VarStringBranch describes the git branch.
@@ -83,6 +85,6 @@ func CreateServiceCommand(_ *cobra.Command, args []string) error {
 		return err
 	}
 
-	err = gogen.DoGenProject(apiFilePath, abs, VarStringStyle, false)
+	err = gogen.DoGenProject(apiFilePath, TemplatePluginName, abs, VarStringStyle, false)
 	return err
 }
