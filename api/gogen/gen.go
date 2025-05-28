@@ -99,7 +99,7 @@ func DoGenProject(apiFile, templatePluginName, dir, style string, withTest bool)
 	}
 
 	// execute template code gen
-	cmd := exec.Command(templatePluginName, apiSpecificationFileName)
+	cmd := exec.Command(templatePluginName, apiSpecificationFileName, dir, style)
 	stdout, _ := cmd.StdoutPipe()
 	_ = cmd.Start()
 
@@ -117,7 +117,7 @@ func DoGenProject(apiFile, templatePluginName, dir, style string, withTest bool)
 		return err
 	}
 
-	fmt.Println(color.Green.Render("Done."))
+	fmt.Println(color.Green.Render("DoGenProject Done."))
 	return nil
 }
 
