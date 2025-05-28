@@ -22,7 +22,6 @@ import (
 	"github.com/shyandsy/shygoctl/model"
 	"github.com/shyandsy/shygoctl/quickstart"
 	"github.com/shyandsy/shygoctl/rpc"
-	"github.com/shyandsy/shygoctl/tpl"
 	"github.com/shyandsy/shygoctl/upgrade"
 	"github.com/spf13/cobra"
 	"github.com/withfig/autocomplete-tools/integrations/cobra"
@@ -114,7 +113,7 @@ func init() {
 
 	rootCmd.SetUsageTemplate(usageTpl)
 	rootCmd.AddCommand(api.Cmd, bug.Cmd, docker.Cmd, kube.Cmd, env.Cmd, gateway.Cmd, model.Cmd)
-	rootCmd.AddCommand(migrate.Cmd, quickstart.Cmd, rpc.Cmd, tpl.Cmd, upgrade.Cmd, config.Cmd)
+	rootCmd.AddCommand(migrate.Cmd, quickstart.Cmd, rpc.Cmd, upgrade.Cmd, config.Cmd)
 	rootCmd.Command.AddCommand(cobracompletefig.CreateCompletionSpecCommand())
 	rootCmd.MustInit()
 }

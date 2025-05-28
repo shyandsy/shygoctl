@@ -1,9 +1,12 @@
 package gogen
 
 import (
+	"bufio"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -15,20 +18,21 @@ import (
 	apiformat "github.com/shyandsy/shygoctl/api/format"
 	"github.com/shyandsy/shygoctl/api/parser"
 	apiutil "github.com/shyandsy/shygoctl/api/util"
-	"github.com/shyandsy/shygoctl/config"
-	"github.com/shyandsy/shygoctl/pkg/golang"
 	"github.com/shyandsy/shygoctl/util"
 	"github.com/shyandsy/shygoctl/util/pathx"
 	"github.com/spf13/cobra"
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 const tmpFile = "%s-%d"
+
+const apiSpecificationFileName = "api_specification.json"
 
 var (
 	tmpDir = path.Join(os.TempDir(), "goctl")
 	// VarStringDir describes the directory.
 	VarStringDir string
+	// TemplatePluginName template plugin name
+	TemplatePluginName string
 	// VarStringAPI describes the API.
 	VarStringAPI string
 	// VarStringHome describes the go home.
@@ -47,6 +51,7 @@ var (
 // GoCommand gen go project files from command line
 func GoCommand(_ *cobra.Command, _ []string) error {
 	apiFile := VarStringAPI
+	templatePluginName := TemplatePluginName
 	dir := VarStringDir
 	namingStyle := VarStringStyle
 	home := VarStringHome
@@ -70,11 +75,11 @@ func GoCommand(_ *cobra.Command, _ []string) error {
 		return errors.New("missing -dir")
 	}
 
-	return DoGenProject(apiFile, dir, namingStyle, withTest)
+	return DoGenProject(apiFile, templatePluginName, dir, namingStyle, withTest)
 }
 
 // DoGenProject gen go project files with api file
-func DoGenProject(apiFile, dir, style string, withTest bool) error {
+func DoGenProject(apiFile, templatePluginName, dir, style string, withTest bool) error {
 	api, err := parser.Parse(apiFile)
 	if err != nil {
 		return err
@@ -84,30 +89,25 @@ func DoGenProject(apiFile, dir, style string, withTest bool) error {
 		return err
 	}
 
-	cfg, err := config.NewConfig(style)
+	specification, err := json.Marshal(*api)
 	if err != nil {
-		return err
+		panic("cannot marshal api specification")
 	}
 
-	logx.Must(pathx.MkdirIfNotExist(dir))
-	rootPkg, err := golang.GetParentPackage(dir)
-	if err != nil {
-		return err
+	if err := os.WriteFile(apiSpecificationFileName, specification, 0666); err != nil {
+		panic("fail to write api specification file")
 	}
 
-	logx.Must(genEtc(dir, cfg, api))
-	logx.Must(genConfig(dir, cfg, api))
-	logx.Must(genMain(dir, rootPkg, cfg, api))
-	logx.Must(genServiceContext(dir, rootPkg, cfg, api))
-	logx.Must(genTypes(dir, cfg, api))
-	logx.Must(genRoutes(dir, rootPkg, cfg, api))
-	logx.Must(genHandlers(dir, rootPkg, cfg, api))
-	logx.Must(genLogic(dir, rootPkg, cfg, api))
-	logx.Must(genMiddleware(dir, cfg, api))
-	if withTest {
-		logx.Must(genHandlersTest(dir, rootPkg, cfg, api))
-		logx.Must(genLogicTest(dir, rootPkg, cfg, api))
+	// execute template code gen
+	cmd := exec.Command(templatePluginName, apiSpecificationFileName)
+	stdout, _ := cmd.StdoutPipe()
+	_ = cmd.Start()
+
+	scanner := bufio.NewScanner(stdout)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
 	}
+	_ = cmd.Wait()
 
 	if err := backupAndSweep(apiFile); err != nil {
 		return err
