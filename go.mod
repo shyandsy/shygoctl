@@ -1,6 +1,6 @@
 module github.com/shyandsy/shygoctl
 
-go 1.21
+go 1.21.0
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
@@ -8,14 +8,13 @@ require (
 	github.com/emicklei/proto v1.14.1
 	github.com/fatih/structtag v1.2.0
 	github.com/go-openapi/spec v0.21.1-0.20250328170532-a3928469592e
-	github.com/go-sql-driver/mysql v1.9.0
+	github.com/go-sql-driver/mysql v1.9.3
 	github.com/gookit/color v1.5.4
 	github.com/iancoleman/strcase v0.3.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/stretchr/testify v1.10.0
 	github.com/withfig/autocomplete-tools/integrations/cobra v1.2.1
-	github.com/zeromicro/antlr v0.0.1
 	github.com/zeromicro/ddl-parser v1.0.5
 	github.com/zeromicro/go-zero v1.8.3
 	golang.org/x/text v0.22.0
