@@ -79,8 +79,8 @@ github.com/go-openapi/spec
 # github.com/go-openapi/swag v0.23.1
 ## explicit; go 1.20
 github.com/go-openapi/swag
-# github.com/go-sql-driver/mysql v1.9.0
-## explicit; go 1.21
+# github.com/go-sql-driver/mysql v1.9.3
+## explicit; go 1.21.0
 github.com/go-sql-driver/mysql
 # github.com/gogo/protobuf v1.3.2
 ## explicit; go 1.15
@@ -263,8 +263,6 @@ github.com/yuin/gopher-lua
 github.com/yuin/gopher-lua/ast
 github.com/yuin/gopher-lua/parse
 github.com/yuin/gopher-lua/pm
-# github.com/zeromicro/antlr v0.0.1
-## explicit; go 1.16
 # github.com/zeromicro/ddl-parser v1.0.5
 ## explicit; go 1.16
 github.com/zeromicro/ddl-parser/console
